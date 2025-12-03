@@ -1,9 +1,9 @@
 import { verifyToken } from "../utils/jwt.util.js";
 
-export const requireAuth = (req,res,next)  =>{
-  const header = req.headers.authorization;
+export const requireAuth = async (req,res,next)  =>{
+  const header = req.headers?.authorization;
   if(!header){
-    return res.statu(401).json({
+    return res.status(401).json({
       message:"Authorization header missing",
       error:"Unauthorized"
 
@@ -18,7 +18,7 @@ export const requireAuth = (req,res,next)  =>{
     })
   }
   try {
-    const decoded = verifyToken(token);
+    const decoded = await verifyToken(token);
     req.user = decoded;
     next();
   } catch (error) {
